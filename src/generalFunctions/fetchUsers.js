@@ -1,6 +1,7 @@
 import getUsers from '../actions/getUsers';
 
-function fetchUsers(){
+export default  function fetchUsers(){
+   
     return dispatch => {
         fetch("https://randomuser.me/api/?results=50")
         .then(res => res.json())
@@ -8,6 +9,8 @@ function fetchUsers(){
             if(res.error) {
                 throw(res.error);
             }
+             console.log(res.results);
+            
             dispatch(getUsers(res.results));
             return res.results;
         })
@@ -16,4 +19,3 @@ function fetchUsers(){
         })
     }   
 }
- export default fetchUsers;

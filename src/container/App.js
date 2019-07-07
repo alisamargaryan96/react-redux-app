@@ -1,16 +1,23 @@
 import React from 'react';
 import './App.css';
 import Users from '../components/Users';
-import getUser from '../actions/getUsers';
+import { bindActionCreators } from 'redux';
+import getUsersInfo from '../reducers/userInfo';
+import fetchUsers from '../generalFunctions/fetchUsers';
 import {connect} from 'react-redux';
 
 
 class App extends React.Component{
- 
+
+  componentWillMount (){
+    const {getUsers} = this.props;
+    getUsers();
+  }
   render () {
+    const {userResult} = this.props;
     return (
       <div>
-          <Users users={this.props.userResult}/>
+          <Users users={userResult}/>
       </div>
     )
   }
@@ -21,11 +28,9 @@ function mapStateToProps(state){
     userResult:state.userInfo.userResult
    }
 }
-function mapDispatchToProps(dispatch){
-    return {
-      getUser: userResult =>{
-        dispatch(getUser(userResult))
-      }
-    }
-}
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    getUsers: fetchUsers
+}, dispatch)
+
 export default connect(mapStateToProps, mapDispatchToProps)(App);
